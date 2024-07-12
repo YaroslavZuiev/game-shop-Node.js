@@ -8,7 +8,7 @@ class SigninContoller {
         let authData = '';
         req.on('data', (chunk) => authData = JSON.parse(chunk.toString()));
         req.on('end', async () => {
-            const jwtToken = jwt.sign({data: authData }, jwtSecret, { expiresIn: '1h' });
+            const jwtToken = jwt.sign({data: authData }, jwtSecret, { expiresIn: '24h' });
             try {
                 const {email, password} = authData;
                 const dbUser = await pool.query('SELECT * FROM users where email = $1', [email]);

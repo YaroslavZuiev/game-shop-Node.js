@@ -7,6 +7,8 @@ async function postsRoute(req, res, id, parsedURL) {
         await postController.createPost(req,res);
     } else if(req.method === 'DELETE' && parsedURL.pathname === '/posts') {
         await postController.deletePost(req,res,id);
+    } else if (req.method === 'GET' && parsedURL.pathname === '/posts/post-details') {
+        await postController.getPostDetails(req,res);
     }
 }
 

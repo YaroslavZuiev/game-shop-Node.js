@@ -1,5 +1,6 @@
 const {pool} = require('../db_credentions')
 const Busboy = require('busboy');
+const {URL} = require("url");
 
 class PostController {
     async getPosts(req, res, id) {
@@ -51,6 +52,24 @@ class PostController {
         try {
             await pool.query('DELETE FROM posts WHERE id = $1', [id]);
             return res.end('Post has been deleted')
+        } catch (e) {
+            res.writeHead(500, {'Content-Type': 'application/json'});
+            return res.end(JSON.stringify({error: e.message}));
+        }
+    }
+
+    async getPostDetails(req, res) {
+        const parsedURL = new URL(req.url, `http://localhost`);
+        const postId = parsedURL.searchParams.get('postId');
+        try {
+            let posts = await pool.query('SELECT * FROM posts where id = $1', [postId]);
+            const [post] = posts.rows;
+            posts = {
+                ...post,
+                image: post.image.toString(),
+            };
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            return res.end(JSON.stringify(posts));
         } catch (e) {
             res.writeHead(500, {'Content-Type': 'application/json'});
             return res.end(JSON.stringify({error: e.message}));
