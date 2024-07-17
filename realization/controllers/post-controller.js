@@ -41,7 +41,7 @@ class PostController {
                         return res.end(JSON.stringify({error: err.message}));
                     }
                     res.writeHead(201, {'Content-Type': 'application/json'});
-                    return res.end(JSON.stringify({success: 'Post successfully created!'}));
+                    return res.end(JSON.stringify({ success: 'Post successfully created!' }));
                 }
             );
         });
@@ -51,7 +51,7 @@ class PostController {
     async deletePost(req, res, id) {
         try {
             await pool.query('DELETE FROM posts WHERE id = $1', [id]);
-            return res.end('Post has been deleted')
+            return res.end(JSON.stringify({ success:'Post has been deleted' }));
         } catch (e) {
             res.writeHead(500, {'Content-Type': 'application/json'});
             return res.end(JSON.stringify({error: e.message}));
@@ -89,8 +89,8 @@ async function getAllPosts(req, res) {
         res.writeHead(200, {'Content-Type': 'application/json'});
         return res.end(JSON.stringify(posts));
     } catch (e) {
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({error: e.message}));
+        res.statusCode = 500;
+        return res.end(JSON.stringify({ error: e.message }));
     }
 }
 

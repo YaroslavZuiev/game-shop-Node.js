@@ -9,7 +9,7 @@ async function routesCollection(req, res) {
     const id = parsedURL.searchParams.get('id');
     setResponseHeaders(req,res);
     if(parsedURL.pathname !== '/sign-in' && parsedURL.pathname !== '/sign-up') {
-        validateJWTToken(req, res);
+        await validateJWTToken(req, res);
     }
     await signUp.singUpRoute(req, res, id, parsedURL);
     await signIn.singInRoute(req, res, parsedURL);
