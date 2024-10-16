@@ -15,7 +15,7 @@ class SigninContoller {
                 const isPasswordCorrect = await bcrypt.compare(password, dbUser.rows[0].password);
                 if (!isPasswordCorrect) {
                     res.writeHead(403, {'Content-Type': 'application/json'});
-                    return res.end(JSON.stringify({message: 'Wrong email or password'}));
+                    return res.end(JSON.stringify({ message: 'Wrong email or password' }));
                 }
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 const response = {

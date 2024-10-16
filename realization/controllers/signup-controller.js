@@ -16,16 +16,15 @@ class SignupController {
                 try {
                     res.writeHead(201, {'Content-Type': 'application/json'});
                     await pool.query(dbScript, dbData);
-                    res.end(JSON.stringify({ message: 'User successfully created!' }));
+                    return res.end(JSON.stringify({ message: 'User successfully created!' }));
                 } catch (e) {
                     res.writeHead(500, {'Content-Type': 'application/json'});
-                    res.end(e.message)
+                    return res.end(JSON.stringify(e.message))
                 }
             } else {
                 res.writeHead(500, {'Content-Type': 'application/json'});
-                res.end(JSON.stringify({ message: 'Such user has been already registered.!' }));
+                return res.end(JSON.stringify({ message: 'Such user has been already registered.!' }));
             }
-
         });
     }
 
@@ -33,7 +32,7 @@ class SignupController {
     async deleteUser(req, res, id) {
         await pool.query('DELETE FROM users WHERE id = $1', [id]);
         res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end('User successfully deleted!');
+        return res.end({ message: 'User successfully deleted!' });
     }
 }
 
